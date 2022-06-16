@@ -80,10 +80,10 @@ def train(config):
         #     print("RocAUC at epoch {}:".format(epoch), roc_auc)
 
         # if epoch % 50 == 0:
-        #     torch.save(model.state_dict(),
-        #                '{}Cloner_{}_epoch_{}.pth'.format(checkpoint_path, normal_class, epoch))
-        #     torch.save(optimizer.state_dict(),
-        #                '{}Opt_{}_epoch_{}.pth'.format(checkpoint_path, normal_class, epoch))
+        torch.save(model.state_dict(),
+                    '{}Cloner_{}_epoch_{}.pth'.format(checkpoint_path, normal_class, epoch))
+        torch.save(optimizer.state_dict(),
+                    '{}Opt_{}_epoch_{}.pth'.format(checkpoint_path, normal_class, epoch))
         #     with open('{}Auc_{}_epoch_{}.pickle'.format(checkpoint_path, normal_class, epoch),
         #               'wb') as f:
         #         pickle.dump(roc_aucs, f)
