@@ -74,19 +74,19 @@ def train(config):
             optimizer.step()
 
         print('epoch [{}/{}], loss:{:.4f}'.format(epoch + 1, num_epochs, epoch_loss))
-        if epoch % 10 == 0:
-            roc_auc = detection_test(model, vgg, test_dataloader, config)
-            roc_aucs.append(roc_auc)
-            print("RocAUC at epoch {}:".format(epoch), roc_auc)
+        # if epoch % 10 == 0:
+        #     roc_auc = detection_test(model, vgg, test_dataloader, config)
+        #     roc_aucs.append(roc_auc)
+        #     print("RocAUC at epoch {}:".format(epoch), roc_auc)
 
-        if epoch % 50 == 0:
-            torch.save(model.state_dict(),
-                       '{}Cloner_{}_epoch_{}.pth'.format(checkpoint_path, normal_class, epoch))
-            torch.save(optimizer.state_dict(),
-                       '{}Opt_{}_epoch_{}.pth'.format(checkpoint_path, normal_class, epoch))
-            with open('{}Auc_{}_epoch_{}.pickle'.format(checkpoint_path, normal_class, epoch),
-                      'wb') as f:
-                pickle.dump(roc_aucs, f)
+        # if epoch % 50 == 0:
+        #     torch.save(model.state_dict(),
+        #                '{}Cloner_{}_epoch_{}.pth'.format(checkpoint_path, normal_class, epoch))
+        #     torch.save(optimizer.state_dict(),
+        #                '{}Opt_{}_epoch_{}.pth'.format(checkpoint_path, normal_class, epoch))
+        #     with open('{}Auc_{}_epoch_{}.pickle'.format(checkpoint_path, normal_class, epoch),
+        #               'wb') as f:
+        #         pickle.dump(roc_aucs, f)
 
 
 def main():
