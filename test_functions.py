@@ -350,3 +350,25 @@ def compute_localization_auc(grad, x_ground):
         fpr.append(np.sum(fp_map) / (np.sum(fp_map) + np.sum(tn_map)))
 
     return auc(fpr, tpr)
+
+def calculate_scores(model, test_dataloader):
+    model.eval()
+    y_true = []
+    y_pred = []
+
+    for (X, Y) in test_dataloader:
+        y_true.append(Y)
+        prediction = model.forward(X)
+        y_pred.append(prediction)
+
+    precision, recall, f1, support = precision_recall_fscore_support(y_true, y_pred, zero_division=1)
+    confusionMatrix = confusion_matrix(y_true, y_pred)
+    roc_auc = auc(fpr, tpr)
+    accuracy = accuracy_score(y_true, y_pred)
+
+    print("Accuracy:\n", accuracy)
+    print("Confusion Matrix:\n", confusionMatrix)
+    print("\nRecall Score:\n", recall)
+    print("\nPrecision Score:\n", precision)
+    print("\nF1 Score:\n", f1)
+    print("\nAUC Score:\n", roc_auc)
