@@ -362,15 +362,9 @@ def calculate_scores(model, test_dataloader):
         prediction = model(X)
         y_pred.append(prediction)
 
-<<<<<<< HEAD
-    y_true.cpu().numpy()
-    y_pred.cpu().numpy()
+    y_true.cpu()
+    y_pred.cpu()
 
-=======
-    y_true.detach().cpu().numpy()
-    y_pred.detach().cpu().numpy()
-    
->>>>>>> 4088687b629c7537dc22fcba403ff9a33612a2d8
     precision, recall, f1, support = precision_recall_fscore_support(y_true, y_pred, zero_division=1)
     confusionMatrix = confusion_matrix(y_true, y_pred)
     roc_auc = auc(fpr, tpr)
