@@ -1,5 +1,5 @@
 from torch import nn
-from sklearn.metrics import roc_curve, auc
+from sklearn.metrics import f1_score, precision_recall_fscore_support, confusion_matrix, roc_curve, accuracy_score, auc, roc_auc_score
 from utils.utils import morphological_process, convert_to_grayscale, max_regarding_to_abs
 from scipy.ndimage.filters import gaussian_filter
 import numpy as np
