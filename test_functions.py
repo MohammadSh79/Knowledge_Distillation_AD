@@ -360,7 +360,7 @@ def calculate_scores(model, test_dataloader):
         X, Y = X.cuda(), Y.cuda()
         y_true.append(Y)
         prediction = model.forward(X)
-        type(prediction)
+        print(type(prediction))
         y_pred.append(prediction)
 
     precision, recall, f1, support = precision_recall_fscore_support(y_true, y_pred, zero_division=1)
