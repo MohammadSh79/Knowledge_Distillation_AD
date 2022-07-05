@@ -1,12 +1,40 @@
 import os
 import torch
 import numpy as np
-from torch.utils.data import DataLoader, TensorDataset, ConcatDataset
+from torch.utils.data import Dataset, DataLoader, TensorDataset, ConcatDataset
 import torchvision.transforms as transforms
 from torchvision.datasets import MNIST, CIFAR10, FashionMNIST
 from torchvision.datasets import ImageFolder
 from PIL import Image
 
+class MHSMA(Dataset):
+    def __init__(self, X_filename, dir, Y_filename, normal_class, train=False):
+        file = os.path.join(dir, X_filename)
+        self.data = np.load(file)
+        self.data = self.data / 255.0
+        self.data = self.data.reshape(-1, 1, 64, 64)
+        self.data = torch.from_numpy(self.data).to(torch.float32)
+
+        file = os.path.join(dir, Y_filename)
+        self.targets = np.load(file)
+        self.targets = self.targets.reshape(-1, 1)
+
+        last_idx = int(self.data.shape[0] - 1)
+        div_idx = int(last_idx * 0.9)
+
+        if train == True:
+            self.data = self.data[0:div_idx]
+            self.data = self.data[np.where(self.targets[0:div_idx] == normal_class)[0]]
+            self.targets = [normal_class] * self.data.shape[0]
+        else:
+            self.data = self.data[div_idx:last_idx]
+            self.targets = self.targets[div_idx:last_idx]
+
+    def __len__(self):
+        return self.data.size()[0]
+
+    def __getitem__(self, idx):
+        return self.data[idx], self.targets[idx]
 
 def load_data(config):
     normal_class = config['normal_class']
@@ -95,9 +123,13 @@ def load_data(config):
         test_data_path = 'Dataset/OCT2017/test'
         test_set = ImageFolder(root=test_data_path, transform=orig_transform)
 
+    elif config['dataset_name'] in ['mhsma']:
+        dataset = MHSMA(dir='/content/mhsma-dataset/mhsma/', X_filename='x_64_train.npy', Y_filename='y_acrosome_train.npy', normal_class=normal_class, train=True)
+        test_set = MHSMA(dir='/content/mhsma-dataset/mhsma/', X_filename='x_64_train.npy', Y_filename='y_acrosome_train.npy', normal_class=normal_class, train=False)
+
     else:
         raise Exception(
-            "You enter {} as dataset, which is not a valid dataset for this repository!".format(config['dataset_name']))
+            "You enter {} as dataset, which is not a valid dataset for this repository!".format(config['dataset_name'])) 
 
     train_dataloader = torch.utils.data.DataLoader(
         dataset,
