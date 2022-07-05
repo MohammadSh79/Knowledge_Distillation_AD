@@ -1,7 +1,7 @@
 from argparse import ArgumentParser
 from utils.utils import get_config
 from dataloader import load_data, load_localization_data
-from test_functions import detection_test, localization_test
+from test_functions import detection_test, localization_test, calculate_scores
 from models.network import get_networks
 
 parser = ArgumentParser()
@@ -26,6 +26,8 @@ def main():
     last_checkpoint = config['last_checkpoint']
     print("RocAUC after {} epoch:".format(last_checkpoint), roc_auc)
 
+    _, test_dataloader = load_data(config)
+    calculate_scores(model=model, test_dataloader=test_dataloader)
 
 if __name__ == '__main__':
     main()
