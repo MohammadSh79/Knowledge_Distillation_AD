@@ -357,6 +357,7 @@ def calculate_scores(model, test_dataloader):
     y_pred = []
 
     for (X, Y) in test_dataloader:
+        X, Y = X.cuda(), Y.cuda()
         y_true.append(Y)
         prediction = model(X)
         y_pred.append(prediction)
