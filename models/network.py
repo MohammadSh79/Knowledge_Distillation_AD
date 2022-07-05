@@ -42,7 +42,7 @@ class VGG(nn.Module):
 
 def make_layers(cfg, use_bias, batch_norm=False):
     layers = []
-    in_channels = 3
+    in_channels = 1
     outputs = []
     for i in range(len(cfg)):
         if cfg[i] == 'O':
