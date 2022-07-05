@@ -360,11 +360,11 @@ def calculate_scores(model, test_dataloader):
         X, Y = X.cuda(), Y.cuda()
         y_true.append(Y)
         prediction = model(X)
-        y_pred.append(prediction.detach().cpu().numpy())
+        y_pred.append(prediction)
 
-    precision, recall, f1, support = precision_recall_fscore_support(y_true, y_pred, zero_division=1)
-    confusionMatrix = confusion_matrix(y_true, y_pred)
-    roc_auc = auc(fpr, tpr)
+    # precision, recall, f1, support = precision_recall_fscore_support(y_true, y_pred, zero_division=1)
+    # confusionMatrix = confusion_matrix(y_true, y_pred)
+    # roc_auc = auc(fpr, tpr)
     accuracy = accuracy_score(y_true, y_pred)
 
     print("Accuracy:\n", accuracy)
