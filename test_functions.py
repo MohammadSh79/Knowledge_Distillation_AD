@@ -362,8 +362,13 @@ def calculate_scores(model, test_dataloader):
         prediction = model.forward(X)
         y_pred.append(prediction)
 
-    y_true = np.array(y_true)
-    y_pred = np.array(y_pred)
+    print(y_true.dtype)
+    y_true.type()
+    print(y_pred.dtype)
+    y_pred.type()
+
+    y_true = np.array(y_true.cpu())
+    y_pred = np.array(y_pred.cpu())
 
     precision, recall, f1, support = precision_recall_fscore_support(y_true, y_pred, zero_division=1)
     confusionMatrix = confusion_matrix(y_true, y_pred)
