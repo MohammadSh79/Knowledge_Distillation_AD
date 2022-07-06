@@ -361,8 +361,8 @@ def calculate_scores(model, test_dataloader):
         prediction = model.forward(X.cuda())
         y_pred.append(prediction)
 
-    print(y_true.size)
-    print(y_pred.size)
+    print(y_true.size())
+    print(y_pred.size())
 
     precision, recall, f1, support = precision_recall_fscore_support(y_true, y_pred, zero_division=1)
     confusionMatrix = confusion_matrix(y_true, y_pred)
