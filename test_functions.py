@@ -358,8 +358,8 @@ def calculate_scores(model, test_dataloader):
 
     for (X, Y) in test_dataloader:
         y_true.append(Y)
-        prediction = model.forward(X.cuda())
-        y_pred.append(prediction.cpu())
+        prediction = model.forward(X)
+        y_pred.append(prediction)
 
     y_true = np.array(y_true)
     y_pred = np.array(y_pred)
