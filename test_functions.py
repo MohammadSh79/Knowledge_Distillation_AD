@@ -362,10 +362,7 @@ def calculate_scores(model, test_dataloader):
         prediction = model.forward(X)
         y_pred.append(prediction)
 
-    print(y_true.dtype)
     y_true.type()
-    print(y_pred.dtype)
-    y_pred.type()
 
     y_true = np.array(y_true.cpu())
     y_pred = np.array(y_pred.cpu())

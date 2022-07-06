@@ -15,9 +15,7 @@ class MHSMA(Dataset):
         self.data = self.data.reshape(-1, 1, 64, 64)
         self.data = torch.from_numpy(self.data).to(torch.float32)
 
-        print(self.data.size())
         self.data = torch.cat([self.data, self.data, self.data], 1)
-        print(self.data.size())
 
         file = os.path.join(dir, Y_filename)
         self.targets = np.load(file)
