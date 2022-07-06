@@ -353,16 +353,16 @@ def compute_localization_auc(grad, x_ground):
 
 def calculate_scores(model, test_dataloader):
     model.eval()
-    y_true = []
-    y_pred = []
+    y_true = np.empty([0, 1])
+    y_pred = np.empty([0, 1])
 
     for (X, Y) in test_dataloader:
-        y_true = Y
+        y_true = np.append(y_true, Y, axis=0)
         prediction = model.forward(X.cuda())
-        y_pred.append(prediction)
+        y_pred = np.append(y_pred, prediction, axis=0)
 
-    print(y_true.size())
-    print(y_pred.size())
+    print(y_true.shape)
+    print(y_pred.shape)
 
     precision, recall, f1, support = precision_recall_fscore_support(y_true, y_pred, zero_division=1)
     confusionMatrix = confusion_matrix(y_true, y_pred)
