@@ -138,10 +138,10 @@ def train2(config):
             Y = Variable(Y).cuda().view((1, 64))
 
             output_pred = model.forward(X)
-            output_pred = np.asarray(output_pred).reshape((1, 64))
+            output_pred = output_pred[-1].reshape((1, 64))
 
             print(Y.size())
-            print(output_pred[-1].size())
+            print(output_pred.size())
             total_loss = criterion(output_pred, Y)
 
             # Add loss to the list
