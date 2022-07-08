@@ -32,7 +32,7 @@ class VGG(nn.Module):
             if i == 2 or i == 5 or i == 8 or i == 11 or i == 14 or i == 17 or i == 20 or i == 23 or i == 26 or i == 29 or i == 32 or i == 35 or i == 38:
                 result.append(x)
 
-        return result
+        return torch.tensor(result)
 
     def get_activations_gradient(self):
         return self.gradients
