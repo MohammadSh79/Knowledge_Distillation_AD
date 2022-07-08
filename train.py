@@ -135,10 +135,10 @@ def train2(config):
             if X.shape[1] == 1:
                 X = X.repeat(1, 3, 1, 1)
             X = Variable(X).cuda()
-            Y = Variable(Y).cuda().view((1, 64))
+            Y = Variable(Y).cuda().view((64, 1))
 
             output_pred = model.forward(X)
-            output_pred = output_pred[-1].reshape((1, 64))
+            output_pred = output_pred[-1].reshape((64, 1))
 
             print(Y.size())
             print(output_pred.size())
