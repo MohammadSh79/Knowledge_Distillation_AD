@@ -58,8 +58,9 @@ def make_layers(cfg, use_bias, batch_norm=False):
             else:
                 layers += [conv2d, nn.ReLU(inplace=True)]
             in_channels = cfg[i]
-    # layers += [nn.Flatten()]
-    # layers += [nn.Linear(in_features=)]
+    layers += [nn.Flatten()]
+    layers += [nn.Linear(in_features=2048, out_features=10)]
+    layers += [nn.Linear(in_features=10, out_features=1)]
     return nn.Sequential(*layers)
 
 
@@ -112,7 +113,6 @@ def get_networks(config, load_checkpoint=False):
 
     vgg = Vgg16(pretrain).cuda()
     model = make_arch(config_type, cfg, use_bias, True).cuda()
-    print(model.features)
 
     for j, item in enumerate(nn.ModuleList(model.features)):
         print('layer : {} {}'.format(j, item))
