@@ -93,33 +93,16 @@ def train2(config):
     normal_class = config["normal_class"]
     learning_rate = float(config['learning_rate'])
     num_epochs = config["num_epochs"]
-    lamda = config['lamda']
-    continue_train = config['continue_train']
-    last_checkpoint = config['last_checkpoint']
-
-    checkpoint_path = "./outputs/{}/{}/checkpoints/".format(config['experiment_name'], config['dataset_name'])
-
-    # create directory
-    Path(checkpoint_path).mkdir(parents=True, exist_ok=True)
 
     train_dataloader, test_dataloader = load_data(config)
-    if continue_train:
-        vgg, model = get_networks(config, load_checkpoint=True)
-    else:
-        vgg, model = get_networks(config)
+    vgg, model = get_networks(config)
 
     criterion = torch.nn.MSELoss()
 
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-    if continue_train:
-        optimizer.load_state_dict(
-            torch.load('{}Opt_{}_epoch_{}.pth'.format(checkpoint_path, normal_class, last_checkpoint)))
 
     losses = []
     roc_aucs = []
-    if continue_train:
-        with open('{}Auc_{}_epoch_{}.pickle'.format(checkpoint_path, normal_class, last_checkpoint), 'rb') as f:
-            roc_aucs = pickle.load(f)
 
     for epoch in range(6):
         model.train()
@@ -150,19 +133,6 @@ def train2(config):
             optimizer.step()
 
         print('epoch [{}/{}], loss:{:.4f}'.format(epoch + 1, 5, epoch_loss))
-        # if epoch % 10 == 0:
-        #     roc_auc = detection_test(model, vgg, test_dataloader, config)
-        #     roc_aucs.append(roc_auc)
-        #     print("RocAUC at epoch {}:".format(epoch), roc_auc)
-
-        # if epoch % 50 == 0:
-        torch.save(model.state_dict(),
-                    '{}Cloner_{}_epoch_{}.pth'.format(checkpoint_path, normal_class, epoch))
-        torch.save(optimizer.state_dict(),
-                    '{}Opt_{}_epoch_{}.pth'.format(checkpoint_path, normal_class, epoch))
-        #     with open('{}Auc_{}_epoch_{}.pickle'.format(checkpoint_path, normal_class, epoch),
-        #               'wb') as f:
-        #         pickle.dump(roc_aucs, f)
 
 def main():
     args = parser.parse_args()
