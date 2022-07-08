@@ -2,6 +2,7 @@ import torch
 from torch import nn
 from torchvision.models import vgg16
 from pathlib import Path
+from torchsummary import summary
 
 
 class VGG(nn.Module):
@@ -57,6 +58,8 @@ def make_layers(cfg, use_bias, batch_norm=False):
             else:
                 layers += [conv2d, nn.ReLU(inplace=True)]
             in_channels = cfg[i]
+    layers += [nn.Flatten()]
+    # layers += [nn.Linear(in_features=)]
     return nn.Sequential(*layers)
 
 
@@ -109,6 +112,7 @@ def get_networks(config, load_checkpoint=False):
 
     vgg = Vgg16(pretrain).cuda()
     model = make_arch(config_type, cfg, use_bias, True).cuda()
+    summary(model, 10, 64, 64)
 
     for j, item in enumerate(nn.ModuleList(model.features)):
         print('layer : {} {}'.format(j, item))
