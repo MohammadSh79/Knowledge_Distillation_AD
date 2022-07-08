@@ -140,8 +140,9 @@ def train2(config):
             output_pred = model.forward(X)
             output_pred = output_pred[-1].reshape((64, 1))
 
-            print(Y.size())
-            print(output_pred.size())
+            print(Y.dtype)
+            print(output_pred.dtype)
+
             total_loss = criterion(output_pred, Y)
 
             # Add loss to the list
