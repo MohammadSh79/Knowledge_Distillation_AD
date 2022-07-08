@@ -59,7 +59,8 @@ def make_layers(cfg, use_bias, batch_norm=False):
                 layers += [conv2d, nn.ReLU(inplace=True)]
             in_channels = cfg[i]
     layers += [nn.Flatten()]
-    layers += [nn.Linear(in_features=2048, out_features=10)]
+    layers += [nn.Linear(in_features=2048, out_features=512)]
+    layers += [nn.Linear(in_features=512, out_features=10)]
     layers += [nn.Linear(in_features=10, out_features=1)]
     return nn.Sequential(*layers)
 
