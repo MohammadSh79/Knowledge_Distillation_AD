@@ -357,13 +357,12 @@ def calculate_scores(model, test_dataloader):
     y_pred = np.empty([0, 1])
 
     for (X, Y) in test_dataloader:
-        y_true = np.append(y_true, Y, axis=0)
-        prediction = model.forward(X.cuda())
-        print(prediction[0].size())
+        y_true = np.append(y_true, Y.view((-1, 1)).to(torch.float32), axis=0)
+        prediction = model.forward(X.cuda())[-1].view((-1, 1)).to(torch.float32).cpu()
         y_pred = np.append(y_pred, prediction, axis=0)
 
-    print(y_true.shape)
-    print(y_pred.shape)
+    print("y_true shape: " + str(y_true.shape))
+    print("y_pred shape: " + str(y_pred.shape))
 
     precision, recall, f1, support = precision_recall_fscore_support(y_true, y_pred, zero_division=1)
     confusionMatrix = confusion_matrix(y_true, y_pred)

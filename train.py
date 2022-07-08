@@ -121,7 +121,7 @@ def train2(config):
         with open('{}Auc_{}_epoch_{}.pickle'.format(checkpoint_path, normal_class, last_checkpoint), 'rb') as f:
             roc_aucs = pickle.load(f)
 
-    for epoch in range(num_epochs + 1):
+    for epoch in range(10):
         model.train()
         epoch_loss = 0
         for data in train_dataloader:
