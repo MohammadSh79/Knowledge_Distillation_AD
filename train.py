@@ -137,7 +137,8 @@ def train2(config):
             X = Variable(X).cuda()
             Y = Variable(Y).cuda().view((1, 64))
 
-            output_pred = model.forward(X).view((1, 64))
+            output_pred = model.forward(X)
+            output_pred = np.asarray(output_pred).reshape((1, 64))
 
             print(Y.size())
             print(output_pred[-1].size())
