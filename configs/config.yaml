@@ -5,7 +5,7 @@ last_checkpoint: 201
 
 
 # Training parameters
-num_epochs: 10 # mnist/fashionmnist:51, cifar10:201, mvtec:601
+num_epochs: 201 # mnist/fashionmnist:51, cifar10:201, mvtec:601
 batch_size: 64
 learning_rate: 1e-3
 mvtec_img_size: 128
