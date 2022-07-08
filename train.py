@@ -90,7 +90,6 @@ def train(config):
 
 def train2(config):
     print("============================ [Training with Y] ============================")
-    direction_loss_only = config["direction_loss_only"]
     normal_class = config["normal_class"]
     learning_rate = float(config['learning_rate'])
     num_epochs = config["num_epochs"]
@@ -109,11 +108,7 @@ def train2(config):
     else:
         vgg, model = get_networks(config)
 
-    # Criteria And Optimizers
-    if direction_loss_only:
-        criterion = DirectionOnlyLoss()
-    else:
-        criterion = MseDirectionLoss(lamda)
+    criterion = torch.nn.MSELoss()
 
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     if continue_train:
