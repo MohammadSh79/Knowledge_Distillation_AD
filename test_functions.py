@@ -361,9 +361,6 @@ def calculate_scores(model, test_dataloader):
         prediction = model.forward(X.cuda())[-1].view((-1, 1)).to(torch.float32).cpu().detach().numpy()
         y_pred = np.append(y_pred, prediction, axis=0)
 
-    print("y_true shape: " + str(y_true.shape))
-    print("y_pred shape: " + str(y_pred.shape))
-
     precision, recall, f1, support = precision_recall_fscore_support(y_true, y_pred, zero_division=1)
     confusionMatrix = confusion_matrix(y_true, y_pred)
     # roc_auc = auc(fpr, tpr)

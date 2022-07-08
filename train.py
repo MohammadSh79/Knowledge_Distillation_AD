@@ -121,7 +121,7 @@ def train2(config):
         with open('{}Auc_{}_epoch_{}.pickle'.format(checkpoint_path, normal_class, last_checkpoint), 'rb') as f:
             roc_aucs = pickle.load(f)
 
-    for epoch in range(5):
+    for epoch in range(6):
         model.train()
         epoch_loss = 0
         for data in train_dataloader:
@@ -149,7 +149,7 @@ def train2(config):
             # Adjust weights
             optimizer.step()
 
-        print('epoch [{}/{}], loss:{:.4f}'.format(6, num_epochs, epoch_loss))
+        print('epoch [{}/{}], loss:{:.4f}'.format(epoch + 1, 5, epoch_loss))
         # if epoch % 10 == 0:
         #     roc_auc = detection_test(model, vgg, test_dataloader, config)
         #     roc_aucs.append(roc_auc)
