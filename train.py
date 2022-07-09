@@ -97,7 +97,7 @@ def train2(config):
     train_dataloader, test_dataloader = load_data(config)
     vgg, model = get_networks(config)
 
-    criterion = torch.nn.MSELoss()
+    criterion = torch.nn.BCELoss()
 
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
