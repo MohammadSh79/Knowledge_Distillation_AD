@@ -138,7 +138,7 @@ def main():
     args = parser.parse_args()
     config = get_config(args.config)
     train(config)
-    train2(config)
+    # train2(config)
 
 
 if __name__ == '__main__':
