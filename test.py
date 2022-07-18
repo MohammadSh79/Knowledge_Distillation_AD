@@ -1,7 +1,7 @@
 from argparse import ArgumentParser
 from utils.utils import get_config
 from dataloader import load_data, load_localization_data
-from test_functions import detection_test, localization_test, calculate_scores
+from test_functions import detection_test, localization_test
 from models.network import get_networks
 
 parser = ArgumentParser()
@@ -26,8 +26,15 @@ def main():
     last_checkpoint = config['last_checkpoint']
     print("RocAUC after {} epoch:".format(last_checkpoint), roc_auc)
 
-    _, test_dataloader = load_data(config)
-    calculate_scores(model=model, test_dataloader=test_dataloader)
+    model.eval()
+    for i in range(0, 60, 1):
+        data = test_dataloader.dataset[i]
+        x = data[0].view(-1, 1, 32, 32).cuda()
+        x = x.repeat(1, 3, 1, 1)
+        y = data[1]
+        loss = nn.MSELoss()
+        print(str(loss(model.forward(x)[-1], vgg(x)[-1]).item()) + "\t\t" + str(y))
+
 
 if __name__ == '__main__':
     main()

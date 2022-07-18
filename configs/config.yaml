@@ -10,7 +10,7 @@ batch_size: 64
 learning_rate: 1e-3
 mvtec_img_size: 128
 
-normal_class: 0 # mvtec:'capsule', mnist:3
+normal_class: 3 # mvtec:'capsule', mnist:3
 
 lamda: 0.01 # mvtec:0.5, Others:0.01
 

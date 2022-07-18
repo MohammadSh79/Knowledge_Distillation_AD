@@ -2,7 +2,6 @@ import torch
 from torch import nn
 from torchvision.models import vgg16
 from pathlib import Path
-from torchsummary import summary
 
 
 class VGG(nn.Module):
@@ -29,7 +28,7 @@ class VGG(nn.Module):
             if i == target_layer:
                 self.activation = x
                 h = x.register_hook(self.activations_hook)
-            if i == 2 or i == 5 or i == 8 or i == 11 or i == 14 or i == 17 or i == 20 or i == 23 or i == 26 or i == 29 or i == 32 or i == 35 or i == 38 or i == 45:
+            if i == 2 or i == 5 or i == 8 or i == 11 or i == 14 or i == 17 or i == 20 or i == 23 or i == 26 or i == 29 or i == 32 or i == 35 or i == 38:
                 result.append(x)
 
         return result
@@ -58,13 +57,6 @@ def make_layers(cfg, use_bias, batch_norm=False):
             else:
                 layers += [conv2d, nn.ReLU(inplace=True)]
             in_channels = cfg[i]
-    layers += [nn.Flatten()]
-    layers += [nn.Linear(in_features=2048, out_features=512)]
-    layers += [nn.ReLU()]
-    layers += [nn.Linear(in_features=512, out_features=16)]
-    layers += [nn.ReLU()]
-    layers += [nn.Linear(in_features=16, out_features=1)]
-    layers += [nn.ReLU()]
     return nn.Sequential(*layers)
 
 

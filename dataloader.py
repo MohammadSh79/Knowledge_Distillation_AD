@@ -1,7 +1,7 @@
 import os
 import torch
 import numpy as np
-from torch.utils.data import Dataset, DataLoader, TensorDataset, ConcatDataset
+from torch.utils.data import DataLoader, TensorDataset, ConcatDataset
 import torchvision.transforms as transforms
 from torchvision.datasets import MNIST, CIFAR10, FashionMNIST
 from torchvision.datasets import ImageFolder
@@ -14,8 +14,6 @@ class MHSMA(Dataset):
         self.data = self.data / 255.0
         self.data = self.data.reshape(-1, 1, 64, 64)
         self.data = torch.from_numpy(self.data).to(torch.float32)
-
-        self.data = torch.cat([self.data, self.data, self.data], 1)
 
         file = os.path.join(dir, Y_filename)
         self.targets = np.load(file)
@@ -128,10 +126,10 @@ def load_data(config):
     elif config['dataset_name'] in ['mhsma']:
         dataset = MHSMA(dir='/content/mhsma-dataset/mhsma/', X_filename='x_64_train.npy', Y_filename='y_acrosome_train.npy', normal_class=normal_class, train=True)
         test_set = MHSMA(dir='/content/mhsma-dataset/mhsma/', X_filename='x_64_train.npy', Y_filename='y_acrosome_train.npy', normal_class=normal_class, train=False)
-
+        
     else:
         raise Exception(
-            "You enter {} as dataset, which is not a valid dataset for this repository!".format(config['dataset_name'])) 
+            "You enter {} as dataset, which is not a valid dataset for this repository!".format(config['dataset_name']))
 
     train_dataloader = torch.utils.data.DataLoader(
         dataset,

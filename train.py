@@ -74,71 +74,25 @@ def train(config):
             optimizer.step()
 
         print('epoch [{}/{}], loss:{:.4f}'.format(epoch + 1, num_epochs, epoch_loss))
-        # if epoch % 10 == 0:
-        #     roc_auc = detection_test(model, vgg, test_dataloader, config)
-        #     roc_aucs.append(roc_auc)
-        #     print("RocAUC at epoch {}:".format(epoch), roc_auc)
+        if epoch % 10 == 0:
+            roc_auc = detection_test(model, vgg, test_dataloader, config)
+            roc_aucs.append(roc_auc)
+            print("RocAUC at epoch {}:".format(epoch), roc_auc)
 
-        # if epoch % 50 == 0:
-        torch.save(model.state_dict(),
-                    '{}Cloner_{}_epoch_{}.pth'.format(checkpoint_path, normal_class, epoch))
-        torch.save(optimizer.state_dict(),
-                    '{}Opt_{}_epoch_{}.pth'.format(checkpoint_path, normal_class, epoch))
-        #     with open('{}Auc_{}_epoch_{}.pickle'.format(checkpoint_path, normal_class, epoch),
-        #               'wb') as f:
-        #         pickle.dump(roc_aucs, f)
+        if epoch % 50 == 0:
+            torch.save(model.state_dict(),
+                       '{}Cloner_{}_epoch_{}.pth'.format(checkpoint_path, normal_class, epoch))
+            torch.save(optimizer.state_dict(),
+                       '{}Opt_{}_epoch_{}.pth'.format(checkpoint_path, normal_class, epoch))
+            with open('{}Auc_{}_epoch_{}.pickle'.format(checkpoint_path, normal_class, epoch),
+                      'wb') as f:
+                pickle.dump(roc_aucs, f)
 
-def train2(config):
-    print("============================ [Training with Y] ============================")
-    normal_class = config["normal_class"]
-    learning_rate = float(config['learning_rate'])
-    num_epochs = config["num_epochs"]
-
-    train_dataloader, test_dataloader = load_data(config)
-    vgg, model = get_networks(config)
-
-    criterion = torch.nn.BCELoss()
-
-    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-
-    losses = []
-    roc_aucs = []
-
-    for epoch in range(6):
-        model.train()
-        epoch_loss = 0
-        for data in train_dataloader:
-            X = data[0]
-            Y = data[1]
-            if X.shape[1] == 1:
-                X = X.repeat(1, 3, 1, 1)
-            X = Variable(X).cuda()
-            Y = Variable(Y).cuda().view((-1, 1)).to(torch.float32)
-
-            output_pred = model.forward(X)
-            output_pred = output_pred[-1].reshape((-1, 1))
-
-
-            total_loss = criterion(output_pred, Y)
-
-            # Add loss to the list
-            epoch_loss += total_loss.item()
-            losses.append(total_loss.item())
-
-            # Clear the previous gradients
-            optimizer.zero_grad()
-            # Compute gradients
-            total_loss.backward()
-            # Adjust weights
-            optimizer.step()
-
-        print('epoch [{}/{}], loss:{:.4f}'.format(epoch + 1, 5, epoch_loss))
 
 def main():
     args = parser.parse_args()
     config = get_config(args.config)
     train(config)
-    train2(config)
 
 
 if __name__ == '__main__':

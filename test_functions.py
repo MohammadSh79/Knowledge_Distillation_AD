@@ -1,5 +1,5 @@
 from torch import nn
-from sklearn.metrics import f1_score, precision_recall_fscore_support, confusion_matrix, roc_curve, accuracy_score, auc, roc_auc_score
+from sklearn.metrics import roc_curve, auc
 from utils.utils import morphological_process, convert_to_grayscale, max_regarding_to_abs
 from scipy.ndimage.filters import gaussian_filter
 import numpy as np
@@ -350,28 +350,3 @@ def compute_localization_auc(grad, x_ground):
         fpr.append(np.sum(fp_map) / (np.sum(fp_map) + np.sum(tn_map)))
 
     return auc(fpr, tpr)
-
-def calculate_scores(model, test_dataloader):
-    model.eval()
-    y_true = np.empty([0, 1])
-    y_pred = np.empty([0, 1])
-
-    for (X, Y) in test_dataloader:
-        y_true = np.append(y_true, Y.view((-1, 1)).to(torch.float32), axis=0)
-        prediction = model.forward(X.cuda())[-1].view((-1, 1)).to(torch.float32).cpu().detach().numpy()
-        y_pred = np.append(y_pred, prediction, axis=0)
-
-    print(y_true)
-    print(y_pred)
-
-    precision, recall, f1, support = precision_recall_fscore_support(y_true, y_pred, zero_division=1)
-    confusionMatrix = confusion_matrix(y_true, y_pred)
-    # roc_auc = auc(fpr, tpr)
-    accuracy = accuracy_score(y_true, y_pred)
-
-    print("Accuracy:\n", accuracy)
-    print("Confusion Matrix:\n", confusionMatrix)
-    print("\nRecall Score:\n", recall)
-    print("\nPrecision Score:\n", precision)
-    print("\nF1 Score:\n", f1)
-    print("\nAUC Score:\n", roc_auc)
