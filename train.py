@@ -20,7 +20,7 @@ def train(config):
     continue_train = config['continue_train']
     last_checkpoint = config['last_checkpoint']
 
-    checkpoint_path = "./outputs/{}/{}/checkpoints/".format(config['experiment_name'], config['dataset_name'])
+    checkpoint_path = "/content/Knowledge_Distillation_AD/outputs/{}/{}/checkpoints/".format(config['experiment_name'], config['dataset_name'])
 
     # create directory
     Path(checkpoint_path).mkdir(parents=True, exist_ok=True)

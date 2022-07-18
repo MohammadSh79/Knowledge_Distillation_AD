@@ -12,7 +12,7 @@ parser.add_argument('--config', type=str, default='configs/config.yaml', help="t
 def main():
     args = parser.parse_args()
     config = get_config(args.config)
-    vgg, model = get_networks(config, load_checkpoint=False)
+    vgg, model = get_networks(config, load_checkpoint=True)
 
     # Localization test
     if config['localization_test']:
