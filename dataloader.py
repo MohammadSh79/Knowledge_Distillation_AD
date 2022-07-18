@@ -1,7 +1,7 @@
 import os
 import torch
 import numpy as np
-from torch.utils.data import DataLoader, TensorDataset, ConcatDataset
+from torch.utils.data import Dataset, DataLoader, TensorDataset, ConcatDataset
 import torchvision.transforms as transforms
 from torchvision.datasets import MNIST, CIFAR10, FashionMNIST
 from torchvision.datasets import ImageFolder
