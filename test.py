@@ -1,3 +1,4 @@
+from torch import nn
 from argparse import ArgumentParser
 from utils.utils import get_config
 from dataloader import load_data, load_localization_data
